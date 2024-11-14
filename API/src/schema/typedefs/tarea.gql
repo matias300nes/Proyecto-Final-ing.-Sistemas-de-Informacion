@@ -1,0 +1,64 @@
+type Query {
+  tareas(filter: JSON, pagination: PaginationInput, order: Order): [Tarea]
+}
+
+type Mutation {
+  saveTarea(input: TareaInput!): Tarea
+  deleteTarea(id: ID!): Boolean
+  addTareaFile(idTarea: ID!, file: Upload!): TareaFile
+  addComentarioTarea(input: InputTareaComentario!): TareaComentario
+}
+
+type Tarea {
+  id: ID!
+  nombre: String
+  tipo: TipoTarea
+  prioridad: String
+  estado: String
+  horasEstimadas: Int
+  descripcion: String
+  createdAt: DateTime
+  documentos: [TareaFile]
+  comentarios: [TareaComentario]
+  responsable: User
+  userAdd: User
+}
+
+input TareaInput {
+  id: ID
+  nombre: String
+  tipo: TipoTarea
+  prioridad: String
+  estado: String
+  horasEstimadas: Int
+  descripcion: String
+  idResponsable: ID
+}
+
+type TareaFile {
+  id: ID!
+  nombre: String
+  file: String
+  createdAt: DateTime
+  idUser: ID
+}
+
+enum TipoTarea {
+  Tarea
+  Incidente
+  Mantenimiento
+}
+
+type TareaComentario {
+  idUser: ID
+  fecha: DateTime
+  emisor: String
+  comentario: String
+}
+
+input InputTareaComentario {
+  idTarea: ID
+  emisor: String
+  comentario: String
+  fecha: DateTime
+}

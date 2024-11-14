@@ -1,0 +1,35 @@
+type Query {
+    notificaciones: [Notificacion]
+}
+
+type Mutation {
+    addNotificacion(input: NotificacionInput): Notificacion
+}
+
+type Subscription {
+    notificaciones: Notificacion
+}
+
+type Notificacion {
+    id: ID
+    createdAt: DateTime
+    programmedAt: DateTime
+    header: String
+    body: String
+    url: String
+    channels: [ChannelEnum]
+}
+
+input NotificacionInput {
+    programmedAt: DateTime
+    header: String
+    body: String
+    url: String
+    channels: [ChannelEnum]
+    users: [ID]
+}
+
+enum ChannelEnum {
+    app
+    email
+}

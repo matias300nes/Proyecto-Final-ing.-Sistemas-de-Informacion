@@ -1,0 +1,60 @@
+type Query {
+    """
+    Usuario autenticado (token debe incluirse en el header)
+    """
+    currentUser: User
+    connections: [ID]
+    usuarios(
+        filter: JSON,
+        pagination:PaginationInput, 
+        search: String,
+        order: Order
+    ): [User]
+}
+
+type Mutation {
+    """
+    Autentica el usuario y devuelve un token
+    """
+    login(input: UserInput!): Auth!
+    saveUser(input: UserInput!): User
+}
+
+type Subscription {
+    """
+    Cada vez que un usuario se logea se emite este evento
+    """
+    connections: ConnectionResponse
+}
+
+type User {
+    id: ID!
+    username: String!
+    email: String!
+    tempPassword: String
+    connected: Boolean!
+    nombre: String
+    apellido: String
+}
+
+"""
+Token de acceso y usuario autenticado
+"""
+type Auth {
+    token: String!
+    user: User!
+}
+
+type ConnectionResponse{
+    idUser: ID
+    status: String
+}
+
+input UserInput {
+    id: ID
+    username: String
+    email: String
+    password: String
+    nombre: String
+    apellido: String
+}

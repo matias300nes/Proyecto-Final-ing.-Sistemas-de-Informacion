@@ -1,0 +1,118 @@
+"""
+Root query type
+"""
+type Query {
+  provincias: [Provincia!]!
+  localidades(provincia: ID!): [Localidad!]!
+  paginationInfo: PaginationInfo
+  permisos(
+    filter: JSON
+    pagination: PaginationInput
+    search: String
+    order: [Order]
+  ): [Permiso]
+}
+
+scalar Date
+scalar DateTime
+scalar Time
+scalar Upload
+scalar JSON
+
+enum GeneroEnum {
+  Hombre
+  Mujer
+  Otro
+}
+
+enum MonedaEnum {
+  Peso
+  Dolar
+}
+
+enum EstadoEnum {
+  Pendiente
+  Aceptado
+  Rechazado
+}
+
+enum ErrorLogStatus {
+  Pendiente
+  Resuelto
+}
+
+type Localidad {
+  id: ID!
+  nombre: String!
+  codigoPostal: String
+  provincia: Provincia
+}
+
+type Provincia {
+  id: ID!
+  nombre: String!
+}
+
+type ErrorLog {
+  id: ID!
+  """
+  Error que causo la interrupcion del sistema
+  """
+  error: String!
+  errorInfo: JSON
+  """
+  Descripcion opcional del error
+  """
+  descripcion: String
+  user: User
+  """
+  Data y parametros que causaron el error, se guarda en formato JSON
+  """
+  data: JSON
+  """
+  Indica si el ticket es generado por usuarion o de forma automática
+  """
+  isAuto: Boolean
+  answer: String
+  responsible: String
+  status: ErrorLogStatus
+  createdAt: DateTime
+}
+
+type PaginationInfo {
+  total: Int
+  pages: Int
+}
+
+input PaginationInput {
+  page: Int
+  limit: Int
+}
+
+input ErrorLogInput {
+  error: String
+  errorInfo: JSON
+  descripcion: String
+  idUser: ID
+  data: JSON
+  isAuto: Boolean
+  answer: String
+  responsible: String
+  status: ErrorLogStatus
+}
+
+input Order {
+  field: String
+  order: OrderEnum
+}
+
+enum OrderEnum {
+  ASC
+  DESC
+}
+
+type Permiso {
+  id: ID!
+  nombre: String!
+  pantalla: String!
+}
